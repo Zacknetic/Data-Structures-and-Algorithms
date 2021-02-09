@@ -1,3 +1,5 @@
+// add a method remove() to the linked list that deletes a node to the specified index.
+
 class LinkedList {
     constructor(value) {
       this.head = {
@@ -37,31 +39,48 @@ class LinkedList {
       return array;
     }
     insert(index, value){
-        if (index === 0) {
-            this.prepend(value);
-            return this.printList();
-          }
-        let curr = this.head
-        let prev;
-      while(index > 0 && curr.next){
-          index--;
-          prev = curr;
-          curr = curr.next;
+      //Check for proper parameters;
+      if(index >= this.length) {
+        return this.append(value);
       }
-      prev.next = {
-          value: value,
-          next: curr
+      
+      const newNode = {
+        value: value,
+        next: null
+      }
+      const leader = this.traverseToIndex(index-1);
+      const holdingPointer = leader.next;
+      leader.next = newNode;
+      newNode.next = holdingPointer;
+      this.length++;
+      return this.printList();
     }
+    traverseToIndex(index) {
+      //Check parameters
+      let counter = 0;
+      let currentNode = this.head;
+      while(counter !== index){
+        currentNode = currentNode.next;
+        counter++;
+      }
+      return currentNode;
+    }
+    remove(index) {
+      // Check Parameters      
+      const leader = this.traverseToIndex(index-1);
+      const unwantedNode = leader.next;
+      leader.next = unwantedNode.next;
+      this.length--;
       return this.printList();
     }
   }
   
   let myLinkedList = new LinkedList(10);
   myLinkedList.append(5);
-  myLinkedList.append(16);
-  myLinkedList.prepend(1)
-  myLinkedList.insert(2, 99)
-  console.log(myLinkedList.insert(1, 88))
+  myLinkedList.append(16);myLinkedList.prepend(1);
+  myLinkedList.insert(2, 99);
+  myLinkedList.insert(20, 88);
+  myLinkedList.remove(2);
   
   
   
